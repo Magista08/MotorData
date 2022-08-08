@@ -76,9 +76,7 @@ def GetData(_model_tag, _model_num):
 
     # Process the data
     column_1 = [x[0] for x in ori_data]
-    # column_1.insert(0, "Positive Current M" + str(_model_num) +"(mA)")
     column_2 = [x[1] for x in ori_data]
-    # column_2.insert(0, "Negative Current M" + str(_model_num) +"(mA)")
     return column_1, column_2
 
 
@@ -95,21 +93,21 @@ if __name__ == '__main__':
 
     # Initialize the list
     output_dict = dict()
-    print("===Start to get index===")
+    print("===计算位置检索===")
     index_list = GetIndex(model_tag)
-    print("===Finished getting index===" + "\n")
+    print("===位置检索计算完成===" + "\n")
 
     # Get Data
-    print("===Start to get data===")
+    print("===开始获取数据===")
     for i in range(model_num):
         model_num_column_1, model_numcolumn_2 = GetData(model_tag, i + 1)
         output_dict["Positive Current M" + str(i + 1) +"(mA)"] = model_num_column_1
         output_dict["Negative Current M" + str(i + 1) +"(mA)"] = model_numcolumn_2
-    print("===Finished getting data===" + "\n")
+    print("===数据获取完成===" + "\n")
 
     # to csv file
-    print("===Start to write csv file===")
+    print("===开始写入csv文件===")
     file_path = "..\\模型采集\\data\\" + model_tag + "\\01 PVC参数\\" + model_tag + " PVC参数.csv"
     df = pd.DataFrame(output_dict, index=index_list)   
     df.to_csv(file_path)
-    print("===Finished writing csv file===")
+    print("===csv文件写入完成===")

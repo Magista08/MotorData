@@ -54,14 +54,14 @@ if __name__ == '__main__':
     index = list(range(600))
 
     # Read data
-    print("===Start to get data===")
+    print("===开始获取数据===")
     for i in range(model_num):
         data_dict["M" + str(i + 1)] = GetData(model_tag, i + 1)
-    print("Finish getting data===\n")
+    print("===提取数据完成===\n")
     
     # Write data
-    print("===Start to write csv file===")
+    print("===开始写入csv文件===")
     file_path = "..\\模型采集\\data\\" + model_tag + "\\02 电流参数\\" + model_tag + " 总电流参数.csv"
     df = pd.DataFrame(data_dict, index=index)   
     df.to_csv(file_path)
-    print("===Finished writing csv file===")
+    print("===文件写入完成===")
