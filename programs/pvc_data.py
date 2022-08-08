@@ -1,0 +1,115 @@
+#!/usr/bin/python3
+
+import pandas as pd
+from sys import argv
+
+
+def GetIndex(_model_tag):
+    # Get max and min position from the first file
+    first_file_path = "..\\模型采集\\data\\" + _model_tag + "\\01 PVC参数\\" + _model_tag + " M1.pvc"
+    try:
+        open_signal = open(first_file_path)
+        open_signal.close()
+    except FileNotFoundError:
+        print(first_file_path + " is not found.")
+        exit(1)
+    except PermissionError:
+        print("You don't have permission to access this file: " + first_file_path )
+        exit(-1)
+    pFirstFile = open(first_file_path, "r")
+
+    # INIT basic parameters
+    nMaxNum = 0
+    nMinNum = 0
+    column_index = list()
+
+    # Update the min and max
+    for j in pFirstFile:
+        tag = j.split("=")
+        if tag[0] == "MaxPos ":
+            nMaxNum = int(tag[1][:-1])
+        elif tag[0] == "MinPos ":
+            nMinNum = int(tag[1][:-1])
+        elif (nMaxNum != 0) and (nMinNum != 0):
+            break
+    pFirstFile.close()
+
+    # Print the average
+    for dividend in range(8):
+        num = float(abs(nMinNum) + abs(nMaxNum)) / 8
+        num = num * dividend + nMinNum
+        for n in range(8):
+            column_index.append(num)
+
+    # Write data
+    return column_index
+
+
+def GetData(_model_tag, _model_num):
+    # Open file
+    file_path = "..\\模型采集\\data\\" + _model_tag + "\\01 PVC参数\\" + _model_tag + " M" + str(_model_num) + ".pvc"
+    try:
+        open_signal = open(file_path)
+        open_signal.close()
+    except FileNotFoundError:
+        print(file_path + " is not found.")
+        exit(1)
+    except PermissionError:
+        print("You don't have permission to access this file: " + file_path )
+    pFile = open(file_path, "r")
+    
+    # Read file line by line
+    ori_data = list()
+    for i in pFile:
+        tag = i.split("=")
+        data = i.split(",")
+
+        # Get rid of the useless data
+        if (len(tag) > 1) and (len(data) == 1):
+            continue
+        
+        # Get the positive current and the negative current
+        temp_list = [float(data[-2]), float(data[-1][:-1])]
+
+        ori_data.append(temp_list)
+    pFile.close()
+
+    # Process the data
+    column_1 = [x[0] for x in ori_data]
+    # column_1.insert(0, "Positive Current M" + str(_model_num) +"(mA)")
+    column_2 = [x[1] for x in ori_data]
+    # column_2.insert(0, "Negative Current M" + str(_model_num) +"(mA)")
+    return column_1, column_2
+
+
+if __name__ == '__main__':
+    # Check if the number of arguments is correct
+    args = len(argv)
+    if args < 2:
+        print("USAGE: python pvc_data.py <模型型号> <电机数量>")
+        exit(1)
+
+    # Get parameters
+    model_tag = argv[1]
+    model_num = int(argv[2])
+
+    # Initialize the list
+    output_dict = dict()
+    print("===Start to get index===")
+    index_list = GetIndex(model_tag)
+    print("===Finished getting index===" + "\n")
+
+    # Get Data
+    print("===Start to get data===")
+    for i in range(model_num):
+        model_num_column_1, model_numcolumn_2 = GetData(model_tag, i + 1)
+        output_dict["Positive Current M" + str(i + 1) +"(mA)"] = model_num_column_1
+        output_dict["Negative Current M" + str(i + 1) +"(mA)"] = model_numcolumn_2
+    print("===Finished getting data===" + "\n")
+
+    # to csv file
+    print("===Start to write csv file===")
+    file_path = "..\\模型采集\\data\\" + model_tag + "\\01 PVC参数\\" + model_tag + " PVC参数.csv"
+    df = pd.DataFrame(output_dict, index=index_list)   
+    df.to_csv(file_path)
+    print("===Finished writing csv file===")
