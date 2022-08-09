@@ -59,7 +59,8 @@ def GetData(_model_tag, _model_num):
     pFile = open(file_path, "r")
     
     # Read file line by line
-    ori_data = list()
+    column_1 = list()
+    column_2 = list()
     for i in pFile:
         tag = i.split("=")
         data = i.split(",")
@@ -69,14 +70,12 @@ def GetData(_model_tag, _model_num):
             continue
         
         # Get the positive current and the negative current
-        temp_list = [float(data[-2]), float(data[-1][:-1])]
+        column_1.append(float(data[-2]))
+        column_2.append(float(data[-1][:-1]))
 
-        ori_data.append(temp_list)
     pFile.close()
 
     # Process the data
-    column_1 = [x[0] for x in ori_data]
-    column_2 = [x[1] for x in ori_data]
     return column_1, column_2
 
 
