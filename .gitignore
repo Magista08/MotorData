@@ -1,3 +1,8 @@
+# Input parameters:
+*.prg
+*.tcf
+
+# Output Data
 *.csv
 *.pvc
 # Mannual
