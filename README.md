@@ -11,31 +11,31 @@ pip install pandas -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.
 
 ## 使用说明
 
-1. 存放位置
+1. 存放位置 && 存放犯法
    - pvc文件
-     - `data -> <电机型号> -> "01 PVC数据" -> "<电机型号> M[1..].pvc"`
+     - `data -> <电机型号> -> <<电机型号> <版本号>> -> "01 PVC数据" -> M[1..].pvc`
    - 电流文件
-     - `data -> <电机型号> -> "02 电流数据" -> "<电机型号> M[1..].pvc"`
+     - `data -> <电机型号> -> <<电机型号> <版本号>> -> "02 电流数据" -> M[1..].csv`
 
 ## 运行命令
 
 1. 获取电流数据
    - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python .\programs\current_data.py <电机型号> <模型数量>
+     python .\programs\current_data.py <电机型号> <版本号> <模型数量>
      ```
 2. 获取PVC总电流数据
    - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python .\programs\pvc_data.py <电机型号> <模型数量>
+     python .\programs\pvc_data.py <电机型号> <版本号> <模型数量>
      ```
 3. 获取PVC正电流数据
-  - 在PowerShell中转移到 `模型采集` 目录
+   - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python .\programs\pvc_data_positive.py <电机型号> <模型数量>
+     python .\programs\pvc_data_positive.py <电机型号> <版本号> <模型数量>
      ```
 4. 获取PVC负电流数据
-   在PowerShell中转移到 `模型采集` 目录
+   - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python .\programs\pvc_data_negative.py <电机型号> <模型数量>
+     python .\programs\pvc_data_negative.py <电机型号> <版本号> <模型数量>
      ```
