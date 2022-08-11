@@ -110,8 +110,8 @@ if __name__ == '__main__':
     print("===开始获取数据===")
     for i in range(model_num):
         model_num_column_1, model_numcolumn_2 = GetData(model_tag, model_version, i + 1)
-        output_dict["正向电流 M" + str(i + 1) +"(mA)"] = model_num_column_1
-        output_dict["负向电流 Current M" + str(i + 1) +"(mA)"] = model_numcolumn_2
+        output_dict["Positive M" + str(i + 1) +"(mA)"] = model_num_column_1
+        output_dict["Negative M" + str(i + 1) +"(mA)"] = model_numcolumn_2
     print("===数据获取完成===" + "\n")
 
     # to csv file
