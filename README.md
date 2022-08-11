@@ -27,15 +27,15 @@ pip install pandas -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.
 2. 获取PVC总电流数据
    - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python python .\programs\pvc_data.py <电机型号> <模型数量>
+     python .\programs\pvc_data.py <电机型号> <模型数量>
      ```
 3. 获取PVC正电流数据
   - 在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python python .\programs\pvc_data_positive.py <电机型号> <模型数量>
+     python .\programs\pvc_data_positive.py <电机型号> <模型数量>
      ```
 4. 获取PVC负电流数据
    在PowerShell中转移到 `模型采集` 目录
      ```PowerShell
-     python python .\programs\pvc_data_negative.py <电机型号> <模型数量>
+     python .\programs\pvc_data_negative.py <电机型号> <模型数量>
      ```
