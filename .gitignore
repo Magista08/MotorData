@@ -5,5 +5,7 @@
 # Output Data
 *.csv
 *.pvc
+*.xlsx
+
 # Mannual
 data/Mannual
