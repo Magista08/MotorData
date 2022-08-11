@@ -4,9 +4,11 @@ import pandas as pd
 from sys import argv
 
 
-def GetData(_model_tag, _model_num):
+def GetData(_model_tag, _model_version, _model_num):
     # Open file
-    file_path = "..\\模型采集\\data\\" + _model_tag + "\\02 电流参数\\" + _model_tag + " M" + str(_model_num) + ".csv"
+    
+    file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+                "\\02 电流参数\\" + "M" + str(_model_num) + ".csv"
     try:
         open_signal = open(file_path)
         open_signal.close()
@@ -35,33 +37,38 @@ def GetData(_model_tag, _model_num):
     
     # return 
     pFile.close()
+    output_list.append(max(output_list))
+    output_list.append(min(output_list))
     return output_list
 
 
 if __name__ == '__main__':
     # Check if the number of arguments is correct
     args = len(argv)
-    if args < 2:
-        print("Usage: python current_data.py <模型型号> <电机数量>")
+    if args < 3:
+        print("USAGE: python current_data.py <模型型号> <版本号> <电机数量>")
         exit(1)
     
     # Get parameters
     model_tag = argv[1]
-    model_num = int(argv[2])
+    model_version = argv[2]
+    model_num = int(argv[3])
 
     # Initialize the list
     data_dict = dict()
     index = list(range(600))
+    index.append("Max current")
+    index.append("Min current")
 
     # Read data
     print("===开始获取数据===")
     for i in range(model_num):
-        data_dict["M" + str(i + 1)] = GetData(model_tag, i + 1)
+        data_dict["M" + str(i + 1)] = GetData(model_tag, model_version, i + 1)
     print("===提取数据完成===\n")
     
     # Write data
     print("===开始写入csv文件===")
-    file_path = "..\\模型采集\\data\\" + model_tag + "\\02 电流参数\\" + model_tag + " 总电流参数.csv"
+    file_path = "模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + "\\" + model_tag + " 实时电流参数.csv"
     df = pd.DataFrame(data_dict, index=index)   
     df.to_csv(file_path)
     print("===文件写入完成===")

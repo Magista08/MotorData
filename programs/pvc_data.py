@@ -1,12 +1,14 @@
 #!/usr/bin/python3
+# -*- coding:utf-8 -*-
 
 import pandas as pd
 from sys import argv
 
 
-def GetIndex(_model_tag):
+def GetIndex(_model_tag, _model_version):
     # Get max and min position from the first file
-    first_file_path = "..\\模型采集\\data\\" + _model_tag + "\\01 PVC参数\\" + _model_tag + " M1.pvc"
+    first_file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+                      "\\01 PVC参数\\M1.pvc"
     try:
         open_signal = open(first_file_path)
         open_signal.close()
@@ -42,12 +44,15 @@ def GetIndex(_model_tag):
             column_index.append(num)
 
     # Write data
+    column_index.append("Max current")
+    column_index.append("Min current")
     return column_index
 
 
-def GetData(_model_tag, _model_num):
+def GetData(_model_tag, _model_version, _model_num):
     # Open file
-    file_path = "..\\模型采集\\data\\" + _model_tag + "\\01 PVC参数\\" + _model_tag + " M" + str(_model_num) + ".pvc"
+    file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+                "\\01 PVC参数\\M" + str(_model_num) + ".pvc"
     try:
         open_signal = open(file_path)
         open_signal.close()
@@ -76,37 +81,43 @@ def GetData(_model_tag, _model_num):
     pFile.close()
 
     # Process the data
+    column_1.append(max(column_1))
+    column_1.append(min(column_1))
+    column_2.append(max(column_2))
+    column_2.append(min(column_2))
     return column_1, column_2
 
 
 if __name__ == '__main__':
     # Check if the number of arguments is correct
     args = len(argv)
-    if args < 2:
-        print("USAGE: python pvc_data.py <模型型号> <电机数量>")
+    if args < 4:
+        print("USAGE: python pvc_data.py <模型型号> <版本号> <电机数量>")
         exit(1)
 
     # Get parameters
     model_tag = argv[1]
-    model_num = int(argv[2])
+    model_version = argv[2]
+    model_num = int(argv[3])
 
     # Initialize the list
     output_dict = dict()
     print("===计算位置检索===")
-    index_list = GetIndex(model_tag)
+    index_list = GetIndex(model_tag, model_version)
     print("===位置检索计算完成===" + "\n")
 
     # Get Data
     print("===开始获取数据===")
     for i in range(model_num):
-        model_num_column_1, model_numcolumn_2 = GetData(model_tag, i + 1)
-        output_dict["Positive Current M" + str(i + 1) +"(mA)"] = model_num_column_1
-        output_dict["Negative Current M" + str(i + 1) +"(mA)"] = model_numcolumn_2
+        model_num_column_1, model_numcolumn_2 = GetData(model_tag, model_version, i + 1)
+        output_dict["正向电流 M" + str(i + 1) +"(mA)"] = model_num_column_1
+        output_dict["负向电流 Current M" + str(i + 1) +"(mA)"] = model_numcolumn_2
     print("===数据获取完成===" + "\n")
 
     # to csv file
     print("===开始写入csv文件===")
-    file_path = "..\\模型采集\\data\\" + model_tag + "\\01 PVC参数\\" + model_tag + " PVC参数.csv"
+    file_path = "模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + \
+                      "\\" + model_tag + " PVC总参数.csv"
     df = pd.DataFrame(output_dict, index=index_list)   
     df.to_csv(file_path)
     print("===csv文件写入完成===")
