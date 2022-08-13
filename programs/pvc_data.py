@@ -2,12 +2,14 @@
 # -*- coding:utf-8 -*-
 
 import pandas as pd
+import os
 from sys import argv
 
 
 def GetIndex(_model_tag, _model_version):
     # Get max and min position from the first file
-    first_file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+    pre_first_file_path = os.path.dirname(os.path.abspath(__file__))
+    first_file_path = pre_first_file_path + "\\..\\模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
                       "\\01 PVC参数\\M1.pvc"
     try:
         open_signal = open(first_file_path)
@@ -51,7 +53,8 @@ def GetIndex(_model_tag, _model_version):
 
 def GetData(_model_tag, _model_version, _model_num):
     # Open file
-    file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+    pre_file_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = pre_file_path + "\\..\\模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
                 "\\01 PVC参数\\M" + str(_model_num) + ".pvc"
     try:
         open_signal = open(file_path)
@@ -116,7 +119,8 @@ if __name__ == '__main__':
 
     # to csv file
     print("===开始写入csv文件===")
-    file_path = "模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + \
+    pre_file_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = pre_file_path + "\\..\\模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + \
                       "\\" + model_tag + " PVC总参数.csv"
     df = pd.DataFrame(output_dict, index=index_list)   
     df.to_csv(file_path)

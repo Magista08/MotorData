@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 
 import pandas as pd
+import os
 from sys import argv
 
 
 def GetData(_model_tag, _model_version, _model_num):
     # Open file
-    
-    file_path = "模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
+    pre_file_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = pre_file_path + "\\..\\模组数据\\" + _model_tag + "\\" +  _model_tag + " " + _model_version + \
                 "\\02 电流参数\\" + "M" + str(_model_num) + ".csv"
     try:
         open_signal = open(file_path)
@@ -68,7 +69,8 @@ if __name__ == '__main__':
     
     # Write data
     print("===开始写入csv文件===")
-    file_path = "模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + "\\" + model_tag + " 实时电流参数.csv"
+    pre_file_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = pre_file_path + "\\..\\模组数据\\" + model_tag + "\\" + model_tag + " " + model_version + "\\" + model_tag + " 实时电流参数.csv"
     df = pd.DataFrame(data_dict, index=index)   
     df.to_csv(file_path)
     print("===文件写入完成===")
